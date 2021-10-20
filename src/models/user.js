@@ -5,5 +5,6 @@ export class User {
         this.lastName = data.lastName
         this.email = data.email
         this.password = data.password
+        this.avatar = data.avatar
     }
 }

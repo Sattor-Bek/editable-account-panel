@@ -15,7 +15,7 @@
                 justify="center"
                 tile
               >
-                <v-img src="http://1.gravatar.com/avatar/19357cef196a8ad90bf4c1b6125137b1"></v-img>
+                <v-img :src="user.avatar"></v-img>
               </v-avatar>
             </v-col>
           </v-row>
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+  import * as md5 from 'md5';
   import { User } from '@/models/user.js';
   import NameForm from './NameForm.vue';
   import EmailForm from './EmailForm.vue';
@@ -61,7 +62,7 @@
       PasswordForm,
     },
     created(){
-      this.user = this.defaultUser()
+      this.assignDefaultUser()
     },
     data(){
       return {
@@ -77,14 +78,23 @@
       };
     },
     methods: {
-      defaultUser: function(){
+      defaultUser: function(url){
         return new User({
           id:"sampleId",
           firstName:"Satoru",
           lastName:"Nishizawa",
-          email:"sample@gmail.com",
+          email:"satoru.nh@gmail.com",
           password:"samplepass",
+          avatar: url,
         })
+      },
+      assignDefaultUser: function(){
+        const baseUrl= "http://1.gravatar.com/avatar/" 
+        const email = this.defaultUser().email;
+        const hash = md5(email);
+        const url = baseUrl+hash;
+        console.log(url);
+        this.user = this.defaultUser(url);
       },
       openNameForm: function(){
         this.editingName = true;
