@@ -21,21 +21,25 @@
           </v-row>
           <v-row align="center" class="grey lighten-5">
             <v-col cols="4"><v-card-text>{{labels.name}}</v-card-text></v-col>
-            <v-col cols="6"><v-card-text>{{user.firstName}} {{user.lastName}}</v-card-text></v-col>
-            <v-col cols="2">
-              <v-btn icon>
-                <v-icon small class="fas fa-edit">
-                </v-icon>
-              </v-btn>
-            </v-col>
+            <name-form v-show="editingName" :user="user" @input="changeName" />
+            <v-col v-show="!editingName" cols="6" >
+                <v-card-text>{{user.firstName}} {{user.lastName}}</v-card-text>
+                </v-col>
+              <v-col v-show="!editingName" cols="2">
+                <v-btn icon @click="openNameForm">
+                  <v-icon small class="fas fa-edit">
+                  </v-icon>
+                </v-btn>
+              </v-col>
           </v-row>
           <v-row align="center">
             <v-col cols="4"><v-card-text>{{labels.email}}</v-card-text></v-col>
-            <v-col cols="6"><v-card-text>{{user.email}}</v-card-text></v-col>
-            <v-col cols="2"><v-btn icon><v-icon small class="fas fa-edit"></v-icon></v-btn></v-col>
+            <email-form v-show="editingEmail" :user="user" @input="changeEmail" /> 
+            <v-col v-show="!editingEmail" cols="6"><v-card-text>{{user.email}}</v-card-text></v-col>
+            <v-col v-show="!editingEmail" cols="2"><v-btn icon @click="openEmailForm"><v-icon small class="fas fa-edit"></v-icon></v-btn></v-col>
           </v-row>
           <v-row align="center" class="grey lighten-5">
-            <v-col cols="4"><v-btn class="grey">{{btn.changePassword}}</v-btn></v-col>
+            <password-form :user="user" @input="changePassword"/>
           </v-row>
         </v-col>
       </v-card>
@@ -44,29 +48,62 @@
 </template>
 
 <script>
+  import { User } from '@/models/user.js';
+  import NameForm from './NameForm.vue';
+  import EmailForm from './EmailForm.vue';
+  import PasswordForm from './PasswordForm.vue';
+
   export default {
     name: 'AccountPanel',
-    
+    components: {
+      NameForm,
+      EmailForm,
+      PasswordForm,
+    },
+    created(){
+      this.user = this.defaultUser()
+    },
     data(){
       return {
-        user: {
-          firstName:"Satoru",
-          lastName:"Nishizawa",
-          email:"sample@gmail.com",
-          password:"sampleps",
-        },
+        user: User,
         labels:{
           cardTitle:"User Profile",
           name:"User Name",
           email:"Email Address",
           password: "Passowrd"
         },
-        btn:{
-          changePassword: "Change Password",
-          edit: "Edit",
-          confirm: "Confirm",
-        },
+        editingName: false,
+        editingEmail: false,
       };
+    },
+    methods: {
+      defaultUser: function(){
+        return new User({
+          id:"sampleId",
+          firstName:"Satoru",
+          lastName:"Nishizawa",
+          email:"sample@gmail.com",
+          password:"samplepass",
+        })
+      },
+      openNameForm: function(){
+        this.editingName = true;
+      },
+      changeName: function(name){
+        this.user.firstName = name.firstName;
+        this.user.lastName = name.lastName;
+        this.editingName = false;
+      },
+      openEmailForm: function(){
+        this.editingEmail = true;
+      },
+      changeEmail: function(email){
+        this.user.email = email;
+        this.editingEmail = false;
+      },
+      changePassword: function(password){
+        this.user.password = password;
+      }
     },
   }
 </script>
