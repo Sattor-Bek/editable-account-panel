@@ -21,5 +21,11 @@ yarn lint
 ```
 
 ### Dependencies
-yarn version: 1.22.0
-
+Dependencies
+├─ yarn 1.22.0
+├─ interpret@1.4.0
+├─ null-loader@4.0.1
+├─ rechoir@0.6.2
+├─ shelljs@0.8.4
+├─ vue-cli-plugin-vuetify@2.4.3
+└─ fortawesome/fontawesome-free@5.15.4
