@@ -21,7 +21,7 @@
           </v-row>
           <v-row align="center" class="grey lighten-5">
             <v-col cols="4"><v-card-text>{{labels.name}}</v-card-text></v-col>
-            <name-form v-show="editingName" :user="user" @input="changeName" @cencel="cancelName"/>
+            <name-form v-show="editingName" :user="user" @input="changeName" @cancel="cancelName"/>
             <v-col v-show="!editingName" cols="6" >
                 <v-card-text>{{user.firstName}} {{user.lastName}}</v-card-text>
                 </v-col>
@@ -112,7 +112,6 @@
         }
       },
       changePassword: function(password){
-        console.log(password, this.user.password)
         if(this.user.password != password){
           this.user.password = password;
           this.openSnackbar("Successfully changed the password"); 
