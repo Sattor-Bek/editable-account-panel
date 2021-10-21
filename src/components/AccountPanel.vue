@@ -48,8 +48,8 @@
 </template>
 
 <script>
-  import * as md5 from 'md5';
   import { User } from '@/models/user.js';
+  import { assignDefaultUser } from '../utilities/sampleUser.js';
   import NameForm from './NameForm.vue';
   import EmailForm from './EmailForm.vue';
   import PasswordForm from './PasswordForm.vue';
@@ -62,7 +62,7 @@
       PasswordForm,
     },
     created(){
-      this.assignDefaultUser()
+      this.user = assignDefaultUser();
     },
     data(){
       return {
@@ -78,24 +78,6 @@
       };
     },
     methods: {
-      defaultUser: function(url){
-        return new User({
-          id:"sampleId",
-          firstName:"Satoru",
-          lastName:"Nishizawa",
-          email:"satoru.nh@gmail.com",
-          password:"samplepass",
-          avatar: url,
-        })
-      },
-      assignDefaultUser: function(){
-        const baseUrl= "http://1.gravatar.com/avatar/" 
-        const email = this.defaultUser().email;
-        const hash = md5(email);
-        const url = baseUrl+hash;
-        console.log(url);
-        this.user = this.defaultUser(url);
-      },
       openNameForm: function(){
         this.editingName = true;
       },
