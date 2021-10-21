@@ -21,7 +21,7 @@
           </v-row>
           <v-row align="center" class="grey lighten-5">
             <v-col cols="4"><v-card-text>{{labels.name}}</v-card-text></v-col>
-            <name-form v-show="editingName" :user="user" @input="changeName" />
+            <name-form v-show="editingName" :user="user" @input="changeName" @cencel="cancelName"/>
             <v-col v-show="!editingName" cols="6" >
                 <v-card-text>{{user.firstName}} {{user.lastName}}</v-card-text>
                 </v-col>
@@ -34,7 +34,7 @@
           </v-row>
           <v-row align="center">
             <v-col cols="4"><v-card-text>{{labels.email}}</v-card-text></v-col>
-            <email-form v-show="editingEmail" :user="user" @input="changeEmail" /> 
+            <email-form v-show="editingEmail" :user="user" @input="changeEmail" @cancel="cancelEmail" /> 
             <v-col v-show="!editingEmail" cols="6"><v-card-text>{{user.email}}</v-card-text></v-col>
             <v-col v-show="!editingEmail" cols="2"><v-btn icon @click="openEmailForm"><v-icon small class="fas fa-edit"></v-icon></v-btn></v-col>
           </v-row>
@@ -44,15 +44,17 @@
         </v-col>
       </v-card>
     </v-row>
+    <snackbar-message :text="message" :snackbar="snackbar" @close="snackbar = false"/>
   </v-container>
 </template>
 
 <script>
   import { User } from '@/models/user.js';
-  import { assignDefaultUser } from '../utilities/sampleUser.js';
-  import NameForm from './NameForm.vue';
-  import EmailForm from './EmailForm.vue';
-  import PasswordForm from './PasswordForm.vue';
+  import { assignDefaultUser } from '@/utilities/sampleUser.js';
+  import NameForm from '@/components/NameForm.vue';
+  import EmailForm from '@/components/EmailForm.vue';
+  import PasswordForm from '@/components/PasswordForm.vue';
+  import SnackbarMessage from '@/components/SnackbarMessage.vue';
 
   export default {
     name: 'AccountPanel',
@@ -60,6 +62,7 @@
       NameForm,
       EmailForm,
       PasswordForm,
+      SnackbarMessage,
     },
     created(){
       this.user = assignDefaultUser();
@@ -73,6 +76,8 @@
           email:"Email Address",
           password: "Passowrd"
         },
+        message:"",
+        snackbar: false,
         editingName: false,
         editingEmail: false,
       };
@@ -82,20 +87,56 @@
         this.editingName = true;
       },
       changeName: function(name){
-        this.user.firstName = name.firstName;
-        this.user.lastName = name.lastName;
+        const uf = this.user.firstName;
+        const ul = this.user.lastName;
+        const nf = name.firstName;
+        const nl = name.lastName;
         this.editingName = false;
+        if(uf == nf && ul == nl){
+          return
+        } else {
+          this.user.firstName = nf;
+          this.user.lastName = nl;
+          let message = "Successfully changed the " + this.changedNameis(uf,ul,nf,nl);
+          this.openSnackbar(message)
+        }
       },
       openEmailForm: function(){
         this.editingEmail = true;
       },
       changeEmail: function(email){
-        this.user.email = email;
         this.editingEmail = false;
+        if(this.user.email != email){
+            this.user.email = email;
+            this.openSnackbar("Successfully changed Email address");
+        }
       },
       changePassword: function(password){
-        this.user.password = password;
-      }
+        console.log(password, this.user.password)
+        if(this.user.password != password){
+          this.user.password = password;
+          this.openSnackbar("Successfully changed the password"); 
+        }
+      },
+      cancelName: function(){
+        this.editingName = false;
+      },
+      cancelEmail: function(){
+        this.editingEmail = false;
+      },
+      openSnackbar: function(message){
+          this.message = message;
+          this.snackbar = true;
+      },
+      changedNameis: function(uf, ul, nf, nl){
+        if(uf != nf && ul != nl){
+          return "first name and last name";
+        } else if (uf != nf && ul == nl){
+          return "first name";
+        } else if (uf == nf && ul != nl){
+          return "last name"
+        }
+      },
     },
   }
 </script>

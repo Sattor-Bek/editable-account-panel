@@ -27,3 +27,9 @@ export default {
   }),
 };
 </script>
+
+<style>
+#app {
+  font-family: 'Open Sans';
+}
+</style>
