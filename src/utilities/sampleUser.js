@@ -2,8 +2,6 @@ import * as md5 from 'md5';
 import { config } from '../config.js';
 
 export function assignDefaultUser() {
-    console.log("starting assignment")
-    console.log(config)
     let sampleUser = config.sampleUser;
     if(sampleUser && !sampleUser.avatar){
         const baseUrl= config.gravatarBaseUrl;
