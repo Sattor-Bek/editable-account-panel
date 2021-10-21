@@ -1,6 +1,6 @@
 import * as md5 from 'md5';
-import { config } from '../config.js';
-import { User } from '../models/user.js'
+import { config } from '@/config.js';
+import { User } from '@/models/user.js'
 
 export function assignDefaultUser() {
     let sampleUser = new User(config.sampleUser);
