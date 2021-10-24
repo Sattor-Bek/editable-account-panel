@@ -1,76 +1,62 @@
 
 <template>
-    <v-row align="center" class="pa-5" >
-        <v-col cols="4"><v-btn class="grey" @click="openDialog">Change Password</v-btn></v-col>    
-        <v-dialog v-model="editingPassword" max-width="600">
-                <v-card>
-                    <v-card-title>
-                        <span class="text-h5">You are changing password</span>
-                    </v-card-title>
-                    <v-card-text>                    
-                        <v-form ref="passwordForm">
-                            <v-card-text>
-                                <v-row align="center">
-                                    <v-col cols="1">
-                                        <v-btn icon @click="unmasking">
-                                            <v-icon small :class="mask.eye"></v-icon>
-                                        </v-btn>
-                                    </v-col>
-                                    <v-col cols="11">
-                                        <v-text-field 
-                                        v-model="oldPassword" 
-                                        :rules="oldPasswordRules"
-                                        :type="mask.type" 
-                                        label="Input your old password" 
-                                        required></v-text-field> 
-                                    </v-col>
-                                </v-row>
-                                <v-row align="center">
-                                    <v-col cols="1">
-                                        <v-btn icon @click="unmasking">
-                                            <v-icon small :class="mask.eye"></v-icon>
-                                        </v-btn>
-                                    </v-col>
-                                    <v-col cols="11">
-                                        <v-text-field
-                                        v-model="newPassword" 
-                                        :rules="newPasswordRules"
-                                        :type="mask.type" 
-                                        label="Input your new password" 
-                                        required></v-text-field> 
-                                    </v-col>
-                                </v-row>
-                                <v-col justify-content="end">
-                                    <v-row>
-                                        <v-col 
-                                        cols="3" 
-                                        v-for="(item, index) in score.classList" 
-                                        :key="index" 
-                                        class="pa-2" 
-                                        :class="item"></v-col>
-                                    </v-row>
-                                    <v-row>
-                                        {{score.message}}
-                                    </v-row>                                    
-                                </v-col>
-                            </v-card-text>
-                            <v-card-text>
-                                <v-card-text>
+  <div>
+    <div class="password-modal">
+        <button @click="switcher">{{labels.changePassword}}</button>
+    </div>
+    <transition name="modal" v-if="editingPassword">
+      <div class="modal-mask">
+        <div class="modal-wrapper" @click.self="close">
+          <div class="modal-container">
+            <div class="cardTitle">{{labels.modalHead}}</div>
 
-                                </v-card-text>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-btn @click="submit">Confirm</v-btn>
-                            </v-card-actions>
-                        </v-form>
-                    </v-card-text>
-                </v-card>
-        </v-dialog>
-    </v-row>
+            <form class="password-form">
+                <label class="password-label" for="oldPassword">{{labels.oldPassword}}</label>
+                <div class="password-form-block">
+                  <div class="form-block">
+                      <i :class="mask.eye" @click="unmasking"></i>
+                    </div>
+                    <div class="form-block">
+                      <input name="oldPassword" :type="mask.type" v-model="oldPassword" >
+                      <div class="error-message">{{oldPasswordValidation}}</div>                    
+                    </div>
+                  </div>
+                  <label class="password-label" for="newPassword">{{labels.newPassword}}</label>
+                  <div class="password-form-block">
+
+                  <div class="form-block">
+                    <i :class="mask.eye" @click="unmasking"></i>
+                  </div>
+                  <div class="form-block">
+                    <input name="newPassword" :type="mask.type" v-model="newPassword">
+                    <div class="error-message">{{newPasswordValidation}}</div>
+                  </div>
+                </div>
+                <div class="password-security-checker">
+                  <div class="bar">
+                    <div v-for="(item, index) in score.classList" 
+                    :key="index"
+                    class="grid" 
+                    :class="item">                                
+                    </div>                            
+                  </div>
+                  <div>{{score.message}}</div>  
+                </div>              
+                <div class="button-box">
+                    <button class="cancel"  @click="switcher">{{labels.cancel}}</button>
+                    <button class="submit"  @click="switcher">{{labels.submit}}</button>
+                </div>                
+              </form>
+            </div>              
+        </div>
+      </div>
+    </transition>    
+  </div>
 </template>
 <script>
   import { User } from '@/models/user.js';
-  import { oldPasswordRules, newPasswordRules, passwordScore} from '@/utilities/validation.js';
+  import { validation, passwordScore} from '@/utilities/validation.js';
+  import { classObj, labels } from '@/utilities/textData.js';
   export default {
     name: 'PasswordForm',
     props:{
@@ -78,18 +64,14 @@
             type: User
         },
     },
-    created(){
-        const oldPassword = this.user.password;
-        const rule = v => v === oldPassword || 'Old password must be correct';
-        this.oldPasswordRules.push(rule);  
-    },
     data() {
         return {
             oldPassword: "",
             newPassword: "",
             message: "",
-            oldPasswordRules: oldPasswordRules,
-            newPasswordRules: newPasswordRules,
+
+            labels: labels,
+            classObj: classObj,
             unmasked: false,
             editingPassword: false,
             snackbar: false,
@@ -97,19 +79,29 @@
     },
     methods:{
         submit: function(){
-            if(this.$refs.passwordForm.validate()){
+
+            if(this.valid){
                 this.$emit("input", this.newPassword);
                 this.editingPassword = false;
-            }            
+            }
+        },
+        valid: function(){
+          return this.oldPasswordValidation === true && this.newPasswordValidation === true
         },
         unmasking: function(){
           this.unmasked ? this.unmasked = false : this.unmasked = true;
         },
-        openDialog: function(){
+        switcher: function(){
             this.oldPassword = ""; 
             this.newPassword = "";
-            this.editingPassword = true;
+            return this.editingPassword ? this.editingPassword = false
+            : this.editingPassword = true;
         },
+        close: function(){
+            if(this.editingPassword){
+                this.editingPassword = false;
+            }
+        }
     },
     computed: {
         score: function(){
@@ -117,14 +109,21 @@
         },
         mask: function(){
             const mask = {
-                    eye: "fas fa-eye",
-                    type:"password"
-                };
+                eye: "fas fa-eye",
+                type:"password"
+              };
             const unmask = {
                 eye: "fas fa-eye-slash",
                 type:"text"
-                };
+              };
             return this.unmasked ?  unmask : mask
+        },
+        oldPasswordValidation(){
+          console.log(validation('oldPassword', this.oldPassword, this.user.password))
+          return validation('oldPassword', this.oldPassword, this.user.password);
+        },
+        newPasswordValidation(){
+          return validation('newPassword', this.newPassword);
         }
     }
   }

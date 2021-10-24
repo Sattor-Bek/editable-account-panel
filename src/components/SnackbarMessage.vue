@@ -1,24 +1,13 @@
 <template>
-  <div class="text-center ma-2">
-    <v-snackbar
-      v-model="snackbar"
-    >
-      {{ text }}
-
-      <template v-slot:action="{ attrs }">
-        <v-btn
-          color="pink"
-          text
-          v-bind="attrs"
-          @click="close"
-        >
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
+  <div class="snackbar-wrapper">
+    <div class="snackbar" :class="openSnackbar">
+      <div>{{ text }}</div>
+      <button class="close" @click="close"> {{labels.close}} </button>
+    </div>
   </div>
 </template>
 <script>
+  import { labels } from '@/utilities/textData.js';
   export default {
     name: "SnackbarMessage",
     props:{
@@ -29,6 +18,11 @@
           type: Boolean,
           default: false,
         },
+    },
+    data(){
+      return {
+        labels: labels
+      };
     },
     methods:{
       close: function(){

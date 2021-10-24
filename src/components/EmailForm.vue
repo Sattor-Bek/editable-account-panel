@@ -1,39 +1,36 @@
 
 <template>
-    <v-row align="center">
-        <v-col cols="9">
-            <v-form ref="emailForm">
-                <v-text-field
-                @keypress.enter="submit"
-                v-model="email"
-                :rules="emailRules"
-                required
-                label="Edit email address">
-                </v-text-field>
-            </v-form>
-        </v-col>
-        <v-col cols="3">
-            <v-btn icon @click="submit">
-                <v-icon small class="fas fa-check-circle"></v-icon>
-            </v-btn>
-            <v-btn icon @click="cancel">
-                <v-icon small class="fas fa-window-close"></v-icon>
-            </v-btn>
-        </v-col>
-    </v-row>
+    <div>
+      <div :class="classObj.card.content">
+        <div><i :class="classObj.icons.email"></i> {{labels.email}}</div>
+        <div>{{user.email}}</div>
+        <div>
+          <i :class="formStatus.icon" v-on:click="switcher"></i>
+        </div>
+      </div>      
+        <form v-if="editingEmail">
+            <label for="email">{{labels.email}}</label>
+            <div class="email-form-block">
+                <div class="form-box">
+                    <input type="email" @keypress.enter="submit" v-model="email" required class="email">
+                    <div class="error-message">{{emailValidation}}</div>
+                </div>
+                <button class="submit" v-on:click="submit">{{labels.submit}}</button>
+            </div>
+            
+        </form>        
+    </div>
 </template>
 <script>
-  import { User } from '@/models/user.js';
-import { emailRules } from '@/utilities/validation.js';
+import { User } from '@/models/user.js';
+import { validation } from '@/utilities/validation.js'; 
+import { classObj, labels , formHandler} from '@/utilities/textData.js';
   export default {
     name: 'EmailForm',
     props:{
         user: {
             type: User
         },
-        editingEmail:{
-            type: Boolean
-        }
     },
     created(){
         this.email = this.user.email;
@@ -41,18 +38,30 @@ import { emailRules } from '@/utilities/validation.js';
     data(){
         return {
             email: "",
-            emailRules: emailRules,
+            labels: labels,
+            classObj: classObj,
+            editingEmail: false,
+        }
+    },
+    computed: {
+        formStatus: function(){
+            return formHandler(this.editingEmail);
+        },
+        emailValidation: function(){
+            return validation('email', this.email);
         }
     },
     methods:{
         submit: function(){
-            if(this.$refs.emailForm.validate()){
+            if(this.emailValidation == true){
                 this.$emit("input", this.email);
             }
-      },
-        cancel: function(){
-          this.$emit("cancel");
-      }
+        },
+        switcher: function(){
+                return this.editingEmail ? 
+                this.editingEmail = false : this.editingEmail = true;     
+            },
+        
+        }
     }
-  }
 </script>
