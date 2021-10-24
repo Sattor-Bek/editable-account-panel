@@ -21,13 +21,13 @@ yarn lint
 ```
 ### Process
 ## First step - Basic functionalities
-At first, in order to implement the basic functions, I used Vuetify as UI framework.
-I implemented the following functions
+At first, in order to implement the basic functions, I used Vuetify as UI framework and I implemented the following functions
 - Editing functions with validations
 - Profile picture fetching function using Gravatar and md5
 - Password safety score evaluations using "zxcvbn"
-## Second step - Building design
-After implementing basic functions, I erased the Vuetify, after confirming that I should not use the UI framework.
+
+## Second step - Building the original design using CSS
+After implementing the basic functions, I erased the Vuetify, after confirming that I should not use the UI framework.
 Regarding the design, I kept it as simple as possible, but at the same time, I put effort on taking balance of size and color.
 
 - Basic design  
