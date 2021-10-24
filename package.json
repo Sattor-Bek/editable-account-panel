@@ -5,7 +5,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "postinstall": "yarn build",
+    "start": "node server.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
@@ -14,6 +16,7 @@
     "@fortawesome/vue-fontawesome": "^2.0.6",
     "@types/zxcvbn": "^4.4.1",
     "core-js": "^3.6.5",
+    "express": "^4.17.1",
     "md5": "^2.3.0",
     "node-sass": "^6.0.1",
     "vue": "^2.6.11",
