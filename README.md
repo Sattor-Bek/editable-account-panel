@@ -36,7 +36,7 @@ It was hard to think about the best design and I would like to have opinions of 
 I separated forms for each items: user name, email address, and password, because as a user, I rarely modify my user profile data and when I change it I change only one item, it can be password, it can be email address, not everything at once.
 
 - Color pallet  
-I chose three colors from color palet from colorhunt (https://colorhunt.co/palette/22577a38a3a557cc9980ed99), it reminds me of the Virtusize logo.
+I chose the color pallet refering to the colorhunt (https://colorhunt.co/palette/22577a38a3a557cc9980ed99), it reminds me of the Virtusize logo.
 
 - Changeable icons  
 There is an "edit" button. When a user pushes the it, it opens a form, and the icon itself turns to a "close" icon.
