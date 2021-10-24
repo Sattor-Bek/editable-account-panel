@@ -81,7 +81,6 @@
         submit: function(){
             if(this.valid){
                 this.$emit("input", this.newPassword);
-                console.log("valid")
                 this.editingPassword = false;
             }
         },
