@@ -27,6 +27,9 @@
     methods:{
       close: function(){
         this.$emit("close");
+      },
+      openSnackbar: function(){
+        return this.snackbar ? "on" : "off";
       }
     }
   }
