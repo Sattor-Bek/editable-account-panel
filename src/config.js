@@ -12,3 +12,11 @@ export const config = {
     sampleUser: sampleUserData,
     gravatarBaseUrl: gravatarBaseUrl
 }
+
+export const colors = {
+    dark: "#22577A",
+    middle: "#38A3A5",
+    light: "#57CC99",
+    veryLight: "#80ED99",
+    red: "#B61919",
+}

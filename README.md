@@ -20,6 +20,7 @@ yarn build
 yarn lint
 ```
 
+<<<<<<< HEAD
 ### Dependencies
 Dependencies
 yarn 1.22.0
@@ -31,3 +32,7 @@ vue-cli-plugin-vuetify@2.4.3
 fortawesome/fontawesome-free@5.15.4
 zxcvbn@4.4.2
 @types/zxcvbn@4.4.1
+=======
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
+>>>>>>> erase-vuetify
