@@ -17,7 +17,7 @@
                       <i :class="mask.eye" @click="unmasking"></i>
                     </div>
                     <div class="form-block">
-                      <input name="oldPassword" :type="mask.type" v-model="oldPassword" >
+                      <input name="oldPassword" :type="mask.type" v-model="oldPassword" required>
                       <div class="error-message">{{oldPasswordValidation}}</div>                    
                     </div>
                   </div>
@@ -28,7 +28,7 @@
                     <i :class="mask.eye" @click="unmasking"></i>
                   </div>
                   <div class="form-block">
-                    <input name="newPassword" :type="mask.type" v-model="newPassword">
+                    <input name="newPassword" :type="mask.type" v-model="newPassword" required>
                     <div class="error-message">{{newPasswordValidation}}</div>
                   </div>
                 </div>
@@ -79,9 +79,9 @@
     },
     methods:{
         submit: function(){
-
             if(this.valid){
                 this.$emit("input", this.newPassword);
+                console.log("valid")
                 this.editingPassword = false;
             }
         },
@@ -119,7 +119,6 @@
             return this.unmasked ?  unmask : mask
         },
         oldPasswordValidation(){
-          console.log(validation('oldPassword', this.oldPassword, this.user.password))
           return validation('oldPassword', this.oldPassword, this.user.password);
         },
         newPasswordValidation(){

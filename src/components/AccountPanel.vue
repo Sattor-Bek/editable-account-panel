@@ -115,7 +115,7 @@
 .card {
   text-align: left;
   position: relative;
-  width:80%;
+  width: 500px;
   max-width:600px;
   margin:0 auto;
   display: grid;
@@ -198,9 +198,9 @@ input:invalid {
   border-bottom-color: #B61919;
 }
 
-input.password:not(:focus):invalid {
+/* input.password:not(:focus):invalid {
   border-bottom-color: #22577A ;
-}
+} */
 
 .error-message {
   font-size: 11px;
@@ -212,9 +212,9 @@ input:invalid + .error-message  {
   display: block;
 }
 
-input.password:not(:focus):invalid + .error-message {
+/* input.password:not(:focus):invalid + .error-message {
   color: transparent;
-}
+} */
 
 input.email{
   width: 80%;
