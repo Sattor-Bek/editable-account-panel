@@ -41,7 +41,7 @@ export const labels = {
     changePassword: "Change Password",
     firstName: "First Name",
     lastName: "Last Name",
-    modalHead:"You are chaning password",
+    modalHead:"You are changing password",
     oldPassword:"Current password",
     newPassword:"New password" 
   }

@@ -9,16 +9,15 @@
         <div class="modal-wrapper" @click.self="close">
           <div class="modal-container">
             <div class="cardTitle">{{labels.modalHead}}</div>
-
-            <form class="password-form">
+            <form class="password-form" @submit.prevent="submit">
                 <label class="password-label" for="oldPassword">{{labels.oldPassword}}</label>
                 <div class="password-form-block">
                   <div class="form-block">
                       <i :class="mask.eye" @click="unmasking"></i>
                     </div>
                     <div class="form-block">
-                      <input name="oldPassword" :type="mask.type" v-model="oldPassword" required>
-                      <div class="error-message">{{oldPasswordValidation}}</div>                    
+                      <input name="oldPassword" :type="mask.type" v-model="oldPassword" :class="invalidate" required>
+                      <div class="error-message" :class="invalidate">{{oldPasswordValidation}}</div>                    
                     </div>
                   </div>
                   <label class="password-label" for="newPassword">{{labels.newPassword}}</label>
@@ -28,7 +27,7 @@
                     <i :class="mask.eye" @click="unmasking"></i>
                   </div>
                   <div class="form-block">
-                    <input name="newPassword" :type="mask.type" v-model="newPassword" required>
+                    <input name="newPassword" :type="mask.type" v-model="newPassword" :valid="newPasswordValidation" required>
                     <div class="error-message">{{newPasswordValidation}}</div>
                   </div>
                 </div>
@@ -44,7 +43,7 @@
                 </div>              
                 <div class="button-box">
                     <button class="cancel"  @click="switcher">{{labels.cancel}}</button>
-                    <button class="submit"  @click="switcher">{{labels.submit}}</button>
+                    <button class="submit"  @click="submit">{{labels.submit}}</button>
                 </div>                
               </form>
             </div>              
@@ -79,13 +78,12 @@
     },
     methods:{
         submit: function(){
-            if(this.valid){
+            if(this.oldPasswordIsValid && this.newPasswordIsValid){
                 this.$emit("input", this.newPassword);
                 this.editingPassword = false;
+            } else {
+              return;
             }
-        },
-        valid: function(){
-          return this.oldPasswordValidation === true && this.newPasswordValidation === true
         },
         unmasking: function(){
           this.unmasked ? this.unmasked = false : this.unmasked = true;
@@ -104,6 +102,7 @@
     },
     computed: {
         score: function(){
+          console.log(this.oldPasswordIsValid)
             return passwordScore(this.newPassword)
         },
         mask: function(){
@@ -120,8 +119,14 @@
         oldPasswordValidation(){
           return validation('oldPassword', this.oldPassword, this.user.password);
         },
+        oldPasswordIsValid(){
+          return typeof this.oldPasswordValidation == "boolean" ? this.oldPasswordValidation : false;
+        },
         newPasswordValidation(){
           return validation('newPassword', this.newPassword);
+        },
+        invalidate(){
+          return this.oldPasswordIsValid ? "": "invalid"
         }
     }
   }

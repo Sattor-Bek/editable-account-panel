@@ -50,18 +50,12 @@
         },
       };
     },
-    mounted () {
-      this.onResize()
-    },
     computed: {
         computedClassObj: function(){
             return this.classObj;
           }
     },    
     methods: {
-      onResize() {
-        this.windowSize = { x: window.innerWidth, y: window.innerHeight };
-      },
       changeName: function(name){
         const uf = this.user.firstName;
         const ul = this.user.lastName;
@@ -194,27 +188,19 @@ input:focus{
   transition: 0.8s;
 }
 
-input:invalid {
+input:invalid, input.invalid {
   border-bottom-color: #B61919;
 }
-
-/* input.password:not(:focus):invalid {
-  border-bottom-color: #22577A ;
-} */
 
 .error-message {
   font-size: 11px;
   color: transparent;
 }
 
-input:invalid + .error-message  {
+input:invalid + .error-message, input.invalid + .error-message.invalid {
   color: #B61919;
   display: block;
 }
-
-/* input.password:not(:focus):invalid + .error-message {
-  color: transparent;
-} */
 
 input.email{
   width: 80%;
