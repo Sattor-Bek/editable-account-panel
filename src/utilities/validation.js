@@ -1,26 +1,5 @@
 import zxcvbn from 'zxcvbn';
 
-export const oldPasswordRules = [
-    v => !!v || 'Old password is required'
-  ]
-export const newPasswordRules = [
-    v => !!v || 'New password is required'
-]
-
-export const firstNameRules = [
-    v => !!v || 'First name is required'
-  ]
-
-  export const lastNameRules = [
-    v => !!v || 'Last name is required',
-  ]
-
-export const emailRules = [
-    v => !!v || 'Email is required',
-    v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-  ];
-
-
 const passwordSafetyScoreType = [
     {
         score:0, 
